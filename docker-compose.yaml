@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  bot_image:
+    build:
+      context: .
+      dockerfile: bot/Dockerfile
+    container_name: bot_image
+    depends_on:
+      - db_image
+    networks:
+      app_network:
+        ipv4_address: ${BOT_HOST}
+
+  db_image:
+    build:
+      context: .
+      dockerfile: db/Dockerfile
+    container_name: db_image
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    networks:
+      app_network:
+        ipv4_address: ${DB_HOST}
+
+  db_repl_image:
+    build:
+      context: .
+      dockerfile: db_repl/Dockerfile
+    container_name: db_repl_image
+    environment:
+      POSTGRES_PASSWORD: ${DB_REPL_PASSWORD}
+      POSTGRES_USER: ${DB_REPL_USER}
+    depends_on:
+      - db_image
+    command: >
+      bash -c "rm -rf /var/lib/postgresql/data/* && sleep 30 && su - postgres &&
+               pg_basebackup -R -h db_image -U repl_user -D /var/lib/postgresql/data -P && tail -f /dev/null"
+    ports:
+      - "${DB_REPL_PORT}:${DB_REPL_PORT}"
+    networks:
+      app_network:
+        ipv4_address: ${DB_REPL_HOST}
+
+
+networks:
+  app_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/24
