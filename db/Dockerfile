@@ -2,7 +2,7 @@ FROM postgres:13
 RUN echo "CREATE TABLE emails (\n    email_id SERIAL PRIMARY KEY,\n    email VARCHAR(255) NOT NULL\n);" >> /docker-entrypoint-initdb.d/init.sql
 RUN echo "CREATE TABLE numbers (\n    number_id SERIAL PRIMARY KEY,\n    number VARCHAR(255) NOT NULL\n);" >> /docker-entrypoint-initdb.d/init.sql
 RUN echo "host all all 0.0.0.0/0 password" >> /usr/share/postgresql/13/pg_hba.conf.sample
-RUN echo "host replication repl_user 172.25.0.30/24 trust" >> /usr/share/postgresql/13/pg_hba.conf.sample
+RUN echo "host replication repl_user all trust" >> /usr/share/postgresql/13/pg_hba.conf.sample
 RUN echo "listen_addresses='*'" > usr/share/postgresql/13/postgresql.conf.sample
 RUN echo "port=5432" >> usr/share/postgresql/13/postgresql.conf.sample
 RUN echo "max_connections=100" >> usr/share/postgresql/13/postgresql.conf.sample
