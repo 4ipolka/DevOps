@@ -1,0 +1,37 @@
+all:
+  vars:
+    DB_REPL_USER: repl_user
+    DB_REPL_PASSWORD: 1234
+    POSTGRES_VERSION: 13
+    DB_HOST: 192.168.93.164
+    DB_REPL_HOST: 192.168.93.165
+  hosts:
+    host01:
+      DB_REPL_PORT: 5432
+      ansible_host: 192.168.93.164
+      ansible_user: root
+      ansible_ssh_pass: 1234
+      dir: /home/kali/ansible
+      DB_DATABASE: tg_bot
+    host02:
+      ansible_host: 192.168.93.165
+      ansible_user: root
+      ansible_ssh_pass: 1234
+    host03:
+      ansible_host: 192.168.93.171
+      ansible_user: kali
+      ansible_ssh_pass: kali
+      dir: /home/kali/bot
+      TOKEN: 7106936495:AAHl-NQh046Qfx9XQWRaX_CtaL17pcPtGs4
+      RM_HOST: 192.168.93.168
+      RM_PORT: 22
+      RM_USER: kali
+      RM_PASSWORD: kali
+      DB_USER: postgres
+      DB_PASSWORD: 1234
+      DB_PORT: 5432
+      DB_DATABASE: tg_bot
+      DB_SSH_PASSWORD: 1234
+      DB_SSH_USER: root
+      DB_SSH_PORT: 22
+      github: https://github.com/4ipolka/DevOps.git
