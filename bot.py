@@ -19,7 +19,10 @@ db_host = os.getenv('DB_HOST')
 db_port = os.getenv('DB_PORT')
 db_username = os.getenv('DB_USER')
 db_password = os.getenv('DB_PASSWORD')
+db_ssh_user = os.getenv('DB_SSH_USER')
+db_ssh_password = os.getenv('DB_SSH_PASSWORD')
 db_name = os.getenv('DB_DATABASE')
+db_ssh_port = os.getenv('DB_SSH_PORT')
 found_email = ""
 found_phone_number = ""
 # Подключаем логирование
@@ -303,7 +306,7 @@ def get_services_command(update: Update, context):
 def get_repl_logs_command(update, context):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(hostname=host, username=username, password=password, port=port)
+    ssh.connect(hostname=db_host, username=db_ssh_user, password=db_ssh_password, port=db_ssh_port)
     stdin, stdout, stderr = ssh.exec_command("cat /var/log/postgresql/* | grep 'replication' | tail -n 10")
     result = stdout.read() + stderr.read()
     ssh.close()
