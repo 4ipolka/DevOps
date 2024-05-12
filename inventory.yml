@@ -22,7 +22,7 @@ all:
       ansible_user: kali
       ansible_ssh_pass: kali
       dir: /home/kali/bot
-      TOKEN: 7106936495:AAHl-NQh046Qfx9XQWRaX_CtaL17pcPtGs4
+      TOKEN: 
       RM_HOST: 192.168.93.168
       RM_PORT: 22
       RM_USER: kali
