@@ -32,7 +32,30 @@ logger = logging.getLogger(__name__)
 
 def start(update: Update, context):
     user = update.effective_user
-    update.message.reply_text(f'Привет {user.full_name}!')
+    update.message.reply_text(f'Привет {user.full_name}. Посмотреть доступные команды - /commands')
+
+def commands(update: Update, context):
+    update.message.reply_text("""
+/find_email - поиск email-адреса в тексте
+/find_phone_number - поиск номера телефона в тексте
+/get_emails - получить записанные email-адреса
+/get_phone_numbers - получить записанные номера телефонов
+/verify_password - проверить надёжность пароля
+/get_release - информация о релизе
+/get_uname - информация об архитектуре процессора, имени хоста системы и версии ядра
+/get_df - информация о состоянии файловой системы 
+/get_free - информация о состоянии оперативной памяти
+/get_mpstat - информация о производительности системы
+/get_w - информация о работающих в данной системе пользователях.
+/get_auths - последние 10 входов в систему
+/get_critical - последние 5 критических событий
+/get_ps - информация о запущенных процессах
+/get_ss - информация об используемых портах
+/get_apt_list - информация об установленных пакетах
+/get_services - информация о запущенных сервисах
+/get_repl_logs - логи репликаций
+/help - HELP!
+""")
 
 def helpCommand(update: Update, context):
     update.message.reply_text('Help!')
@@ -281,7 +304,7 @@ def get_repl_logs_command(update, context):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostname=host, username=username, password=password, port=port)
-    stdin, stdout, stderr = ssh.exec_command("docker logs -n 40 docker_db_1")
+    stdin, stdout, stderr = ssh.exec_command("cat /var/log/postgresql/* | grep 'replication' | tail -n 10")
     result = stdout.read() + stderr.read()
     ssh.close()
     result = str(result).replace('\\n', '\n').replace('\\t', '\t')[2:-1]
@@ -502,6 +525,7 @@ def main():
 	# Регистрируем обработчики команд
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", helpCommand))
+    dp.add_handler(CommandHandler("commands", commands))
     dp.add_handler(convHandlerfind_phone_number)
     dp.add_handler(convHandlerfind_email)
     dp.add_handler(convHandlerverify_password)
