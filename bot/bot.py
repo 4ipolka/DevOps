@@ -81,7 +81,8 @@ def get_apt_list_command(update: Update, context):
 def find_email(update: Update, context):
     global found_email
     user_input = update.message.text
-    emailRegex = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
+    emailRegex = re.compile(r'\b[a-zA-Z0-9.!#$%&\'*+/=?^_{|}~-]+(?:\.[a-zA-Z0-9.!#$%&\'*+/=?^_{|}~-]+)*' \
+                r'@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}\b')
     emailList = emailRegex.findall(user_input)
     if not emailList:
         update.message.reply_text('Email-адреса не найдены')
@@ -118,7 +119,7 @@ def save_email(update: Update, context):
 def find_phone_number(update: Update, context):
     global found_phone_number
     user_input = update.message.text
-    phoneNumberRegex = re.compile(r'(?:8|\+7)[-\s]?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{2}[-\s]?\d{2}')
+    phoneNumberRegex = re.compile(r"\+?7[ -]?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{2}[ -]?\d{2}|\+?7[ -]?\d{10}|\+?7[ -]?\d{3}[ -]?\d{3}[ -]?\d{4}|8[ -]?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{2}[ -]?\d{2}|8[ -]?\d{10}|8[ -]?\d{3}[ -]?\d{3}[ -]?\d{4}")
     phoneNumberList = phoneNumberRegex.findall(user_input)
     if not phoneNumberList:
         update.message.reply_text('Номера телефона не найдены')
@@ -154,7 +155,7 @@ def save_phone_number(update: Update, context):
 
 def verify_password(update: Update, context):
     user_input = update.message.text
-    passwordRegex = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$%*?&-_])[A-Za-z\d@$%*?&]{8,}$')
+    passwordRegex = re.compile(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_\-])[A-Za-z\d!@#$%^&*()_\-]{8,}$')
     if passwordRegex.match(user_input):
         update.message.reply_text('Пароль сложный')
     else:
