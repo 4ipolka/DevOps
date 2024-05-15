@@ -157,7 +157,7 @@ def save_phone_number(update: Update, context):
 
 def verify_password(update: Update, context):
     user_input = update.message.text
-    passwordRegex = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$%*?&-_])[A-Za-z\d@$%*?&]{8,}$')
+    passwordRegex = re.compile(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_\-])[A-Za-z\d!@#$%^&*()_\-]{8,}$')
     if passwordRegex.match(user_input):
         update.message.reply_text('Пароль сложный')
     else:
