@@ -41,7 +41,7 @@ services:
       - db_image
     command: >
       bash -c "rm -rf /var/lib/postgresql/data/* && sleep 15 && su - postgres &&
-               pg_basebackup -R -h db_image -U ${DB_REPL_USER} -D /var/lib/postgresql/data -vP -w && tail -f /dev/null"
+               pg_basebackup -R -h db_image -p ${DB_PORT} -U ${DB_REPL_USER} -D /var/lib/postgresql/data -vP -w && tail -f /dev/null"
     ports:
       - "${DB_REPL_PORT}:${DB_REPL_PORT}"
 
