@@ -40,8 +40,9 @@ services:
     depends_on:
       - db_image
     command: >
-      bash -c "rm -rf /var/lib/postgresql/data/* && sleep 15 && su - postgres &&
-               pg_basebackup -R -h db_image -U ${DB_REPL_USER} -D /var/lib/postgresql/data -vP -w && tail -f /dev/null"
+      bash -c "rm -rf /var/lib/postgresql/data/* &&
+               pg_basebackup -R -h db_image -U ${DB_REPL_USER} -p ${DB_PORT} -D /var/lib/postgresql/data -vP -w && chown -R postgres:postgres /var/lib/postgresql/data &&
+               chmod 700 /var/lib/postgresql/data && su - postgres -c 'exec /usr/lib/postgresql/13/bin/postgres -D /var/lib/postgresql/data'"
     ports:
       - "${DB_REPL_PORT}:${DB_REPL_PORT}"
 
