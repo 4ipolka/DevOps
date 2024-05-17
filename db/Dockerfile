@@ -9,7 +9,8 @@ RUN sed -i 's/replacerepl_name/'"$DB_REPL_USER"'/g' /init.sql
 RUN sed -i 's/replacerepl_pass/'"$DB_REPL_PASSWORD"'/g' /init.sql
 RUN mv /init.sql /docker-entrypoint-initdb.d/init.sql
 
-RUN echo "host replication replacerepl_name 0.0.0.0/0 scram-sha-256" >> /usr/share/postgresql/13/pg_hba.conf.sample
+RUN echo "host all all 0.0.0.0/0 password" >> /usr/share/postgresql/13/pg_hba.conf.sample
+RUN echo "host replication replacerepl_name 0.0.0.0/0 trust" >> /usr/share/postgresql/13/pg_hba.conf.sample
 RUN sed -i 's/replacerepl_name/'$DB_REPL_USER'/g' /usr/share/postgresql/13/pg_hba.conf.sample
 
 RUN echo "listen_addresses='*'" > usr/share/postgresql/13/postgresql.conf.sample
